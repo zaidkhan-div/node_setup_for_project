@@ -20,7 +20,7 @@ const dbPassword = process.env.dbPassword;
 const connection = mysql.createConnection({
   host: 'mysql-36a84918-zaidscestudent-9fd6.c.aivencloud.com',
   user: 'avnadmin',
-  password: dbPassword,
+  password: 'AVNS_hlOEVAO5xe0J75jZTOb',
   database: 'testing',
   port: 24853,
 })
@@ -108,7 +108,7 @@ app.get('/search/:id', function (req, res) {
 });
 
 app.get('/products', function (req, res) {
-  const sql = `SELECT * FROM products`; // Query to get all products
+  const sql = `SELECT * FROM products`;
 
   connection.query(sql, (err, results) => {
     if (err) {
