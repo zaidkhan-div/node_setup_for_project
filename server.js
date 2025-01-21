@@ -14,11 +14,11 @@ const dbPassword = process.env.dbPassword;
 // const connection = mysql.createConnection({
 //   host: 'localhost',
 //   user: 'root',
-//   password: '@mysql!12#',
+//   password: 'process.env.mysql',
 //   database: 'testing'
 // })
 // const connection = mysql.createConnection({
-//   host: 'mysql-36a84918-zaidscestudent-9fd6.c.aivencloud.com',
+// host: process.env.DB_HOST,
 //   user: 'avnadmin',
 //   password: 'process.env.DB_PASSWORD',
 //   database: 'testing',
