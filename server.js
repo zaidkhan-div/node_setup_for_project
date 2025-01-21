@@ -20,7 +20,7 @@ const dbPassword = process.env.dbPassword;
 // const connection = mysql.createConnection({
 //   host: 'mysql-36a84918-zaidscestudent-9fd6.c.aivencloud.com',
 //   user: 'avnadmin',
-//   password: 'AVNS_hlOEVAO5xe0J75jZTOb',
+//   password: 'process.env.DB_PASSWORD',
 //   database: 'testing',
 //   port: 24853,
 // })
