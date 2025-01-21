@@ -17,19 +17,30 @@ const dbPassword = process.env.dbPassword;
 //   password: '@mysql!12#',
 //   database: 'testing'
 // })
-const connection = mysql.createConnection({
+
+// const connection = mysql.createConnection({
+//  host: 'mysql-36a84918-zaidscestudent-9fd6.c.aivencloud.com',
+//  user: 'avnadmin',
+//  password: dbPassword,
+//  database: 'testing',
+//  port: 24853,
+//})
+
+const connection = mysql.createPool({
   host: 'mysql-36a84918-zaidscestudent-9fd6.c.aivencloud.com',
   user: 'avnadmin',
-  password: dbPassword,
+  password: 'AVNS_hlOEVAO5xe0J75jZTOb',
   database: 'testing',
   port: 24853,
-})
-
-
-connection.connect(function (err) {
-  if (err) throw err;
-  console.log("Connected!");
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
 });
+
+// connection.connect(function (err) {
+//  if (err) throw err;
+//  console.log("Connected!");
+// });
 // connection.connect()
 
 
