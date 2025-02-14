@@ -14,36 +14,6 @@ dotenv.config()
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY
 const authenticateToken = require('./authMiddleware');
 
-// const connection = mysql.createConnection({
-//   host: 'localhost',
-//   user: 'root',
-//   password: 'process.env.mysql',
-//   database: 'testing'
-// })
-<<<<<<< HEAD
-// const connection = mysql.createConnection({
-// host: process.env.DB_HOST,
-//   user: process.env.DB_USER,
-//   password: process.env.DB_PASSWORD,
-//   database: 'testing',
-//   port: 24853,
-// })
-
-const connection = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE,
-  port: process.env.DB_PORT,
-=======
-
-// const connection = mysql.createConnection({
-//  host: 'mysql-36a84918-zaidscestudent-9fd6.c.aivencloud.com',
-//  user: 'avnadmin',
-//  password: dbPassword,
-//  database: 'testing',
-//  port: 24853,
-//})
 
 const connection = mysql.createPool({
   host: 'mysql-36a84918-zaidscestudent-9fd6.c.aivencloud.com',
@@ -51,24 +21,10 @@ const connection = mysql.createPool({
   password: 'AVNS_hlOEVAO5xe0J75jZTOb',
   database: 'testing',
   port: 24853,
->>>>>>> eaa0dfd0b42de8e3ef0d31e5a45d2cd210fe5e17
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
 });
-
-// connection.connect(function (err) {
-<<<<<<< HEAD
-//   if (err) throw err;
-//   console.log("Connected!");
-// });
-
-=======
-//  if (err) throw err;
-//  console.log("Connected!");
-// });
->>>>>>> eaa0dfd0b42de8e3ef0d31e5a45d2cd210fe5e17
-// connection.connect()
 
 
 app.post('/add', function (req, res) {

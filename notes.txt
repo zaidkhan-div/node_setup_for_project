@@ -1,0 +1,25 @@
+// connection.connect(function (err) {
+//   if (err) throw err;
+//   console.log("Connected!");
+// });
+
+//  if (err) throw err;
+//  console.log("Connected!");
+//;
+// connection.connect()
+
+
+// const connection = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'root',
+//   password: 'process.env.mysql',
+//   database: 'testing'
+// })
+
+// const connection = mysql.createConnection({
+// host: process.env.DB_HOST,
+//   user: process.env.DB_USER,
+//   password: process.env.DB_PASSWORD,
+//   database: 'testing',
+//   port: 24853,
+// })
