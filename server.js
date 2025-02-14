@@ -174,7 +174,6 @@ app.get('/profile', authenticateToken, (req, res) => {
   connection.query(sql, [req.user.userId], (err, results) => {
     if (err) return res.status(500).json({ message: 'Server error', error: err.message });
     if (results.length === 0) return res.status(404).json({ message: 'User not found' });
-
     res.json({ profile: results[0] });
   });
 });
