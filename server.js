@@ -1,14 +1,18 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const app = express();
 const port = 24853;
 const cors = require('cors');
 const mysql = require('mysql2')
-require('dotenv').config();
+const dotenv = require('dotenv')
 
 // Used
 app.use(express.json());
 app.use(cors())
-
+dotenv.config()
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY
+const authenticateToken = require('./authMiddleware');
 
 // const connection = mysql.createConnection({
 //   host: 'localhost',
@@ -133,12 +137,69 @@ app.get('/products', function (req, res) {
   });
 });
 
-
-
-
 app.get('/', (req, res) => {
   res.send('This is Admin Pannel')
 })
+
+// Admin Ends Here 
+
+//  Protected Routes Start From Here
+
+// Register Route
+app.post('/register', async (req, res) => {
+  const { name, email, password } = req.body;
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const sqlquery = 'INSERT INTO testing.users (name,email,password) VALUES (?, ?,?)';
+    connection.query(sqlquery, [name, email, hashedPassword], (err) => {
+      if (err) {
+        return res.status(400).json({ message: 'User already exists or an error occurred', error: err.message });
+      }
+      res.status(201).json({ message: 'User registered successfully' });
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+});
+
+// Login Route
+app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+  const sql = 'SELECT * FROM users WHERE email = ?';
+
+  connection.query(sql, [email], async (err, results) => {
+    if (err) return res.status(500).json({ message: 'Server error', error: err.message });
+    if (results.length === 0) return res.status(401).json({ message: 'Invalid credentials' });
+
+    const user = results[0];
+    const isMatch = await bcrypt.compare(password, user.password);  // Corrected here
+    if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
+
+    const payload = { userId: user.id, name: user.name, email: user.email };  // Corrected here
+    const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: '1h' });
+
+    res.json({ token });
+  });
+});
+
+
+// Protected Route
+app.get('/protected', authenticateToken, (req, res) => {
+  res.json({ message: 'You have accessed protected data!', user: req.user });
+});
+
+// Another Example of a Protected Route
+app.get('/profile', authenticateToken, (req, res) => {
+  const sql = 'SELECT id, name FROM users WHERE id = ?';
+  connection.query(sql, [req.user.userId], (err, results) => {
+    if (err) return res.status(500).json({ message: 'Server error', error: err.message });
+    if (results.length === 0) return res.status(404).json({ message: 'User not found' });
+
+    res.json({ profile: results[0] });
+  });
+});
+
+//  Protected Routes End Here
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
