@@ -131,15 +131,21 @@ app.post('/register', async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const sqlquery = 'INSERT INTO testing.users (name,email,password) VALUES (?, ?,?)';
-    connection.query(sqlquery, [name, email, hashedPassword], (err) => {
+    connection.query(sqlquery, [name, email, hashedPassword], (err, result) => {
       if (err) {
-        return res.status(400).json({ message: 'User already exists or an error occurred', error: err.message });
+        return res.status(400).json({ message: 'User already exists', error: err.message });
       }
+
+      const userId = result.insertId;
+      const payload = { userId, name, email }
+      const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: '1h' })
+
       res.status(201).json({ message: 'User registered successfully' });
     });
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
+  res.json(token)
 });
 
 // Login Route
@@ -153,9 +159,9 @@ app.post('/login', (req, res) => {
 
     const user = results[0];
     const isMatch = await bcrypt.compare(password, user.password);  // Corrected here
-    if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
+    if (!isMatch) return res.status(401).json({ message: 'Invalid Password' });
 
-    const payload = { userId: user.id, name: user.name, email: user.email };  // Corrected here
+    const payload = { userId: user.id, name: user.name, email: user.email };
     const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: '1h' });
 
     res.json({ token });
