@@ -140,12 +140,13 @@ app.post('/register', async (req, res) => {
       const payload = { userId, name, email }
       const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: '1h' })
 
-      res.status(201).json({ message: 'User registered successfully' });
+      res.status(201).json({ message: 'User registered successfully',token });
+  res.json({token})
+    
     });
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
-  res.json(token)
 });
 
 // Login Route
