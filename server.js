@@ -11,20 +11,23 @@ const dotenv = require('dotenv')
 app.use(express.json());
 app.use(cors())
 dotenv.config()
-const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
+const dbPassword = process.env.DB_PASSWORD;
+const portEnv = process.env.DB_PORT;
 const authenticateToken = require('./authMiddleware');
 
 
 const connection = mysql.createPool({
   host: 'mysql-36a84918-zaidscestudent-9fd6.c.aivencloud.com',
   user: 'avnadmin',
-  password: 'AVNS_hlOEVAO5xe0J75jZTOb',
+  password: dbPassword,
   database: 'testing',
-  port: 24853,
+  port: portEnv,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
 });
+
 
 
 app.post('/add', function (req, res) {
